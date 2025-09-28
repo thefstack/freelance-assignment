@@ -1,40 +1,122 @@
-"use client"
+"use-client";
 
-import AppBar from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
-import Box from "@mui/material/Box"
-import Stack from "@mui/material/Stack"
+import * as React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Typography,
+  Box,
+  Stack,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ArticleIcon from "@mui/icons-material/Article";
+
+const navLinks = ["TMS solutions", "Pricing", "Contact us"];
+const resourcesLink = "Resources";
 
 export default function Navbar() {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
   return (
-    <AppBar position="sticky" color="secondary" sx={{ bgcolor: "secondary.main" }}>
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Stack direction="row" spacing={1} alignItems="center">
+    <AppBar position="sticky" sx={{ bgcolor: "common.black" }}>
+      <Toolbar>
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{ flexGrow: 1, py:2 }}
+          
+        >
           <Box
-            sx={{
-              width: 24,
-              height: 24,
-              bgcolor: "primary.main",
-              borderRadius: 1,
-            }}
+            component="img"
+            src="https://instalanes.com/new_instalanes/wp-content/uploads/2024/08/cropped-cropped-WhatsApp-Image-2024-03-23-at-12.47.36-PM.jpeg"
+            alt="logo"
+            sx={{ position: "relative", width: "80px", mb: 2 }}
           />
-          <Typography variant="h6" color="common.white" sx={{ fontWeight: 700 }}>
+          <Typography
+            variant="h6"
+            color="common.white"
+            sx={{ fontWeight: 700 }}
+          >
             Instalanes
           </Typography>
         </Stack>
 
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Button color="inherit">TMS solutions</Button>
-          <Button color="inherit">Resources</Button>
-          <Button color="inherit">Pricing</Button>
-          <Button color="inherit">Contact us</Button>
-          <Button variant="contained" color="primary">
-            Get Demo
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ display: { xs: "none", md: "flex" } }}
+        >
+          <Button color="inherit">{navLinks[0]}</Button>
+          <Button color="inherit" endIcon={<KeyboardArrowDownIcon />}>
+            {resourcesLink}
           </Button>
+          <Button color="inherit">{navLinks[1]}</Button>
+          <Button color="inherit">{navLinks[2]}</Button>
         </Stack>
+
+        <Box sx={{ flexGrow: { xs: 0, md: 1 } }} />
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<ArticleIcon />}
+          sx={{ ml: { md: 2 }, border:"none", borderRadius:0 }}
+        >
+          Get Demo
+        </Button>
+
+        <Box sx={{ display: { xs: "flex", md: "none" }, ml: 1 }}>
+          <IconButton
+            size="large"
+            aria-label="navigation menu"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleOpenNavMenu}
+            color="inherit"
+          >
+            <MenuIcon />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorElNav}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            open={Boolean(anchorElNav)}
+            onClose={handleCloseNavMenu}
+          >
+            {[...navLinks.slice(0, 1), resourcesLink, ...navLinks.slice(1)].map(
+              (link) => (
+                <MenuItem key={link} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{link}</Typography>
+                </MenuItem>
+              )
+            )}
+          </Menu>
+        </Box>
       </Toolbar>
     </AppBar>
-  )
+  );
 }
